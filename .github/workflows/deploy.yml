@@ -32,7 +32,7 @@ jobs:
         run: "deno install"
 
       - name: Build step
-        run: "deno compile --allow-net main.ts"
+        run: "deno compile --allow-net --output main main.ts"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
