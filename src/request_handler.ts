@@ -1,5 +1,5 @@
+import { TOKEN } from "./constants.ts";
 import { fetchLanguageStats } from "./github_client.ts";
-import { TOKEN } from "./token.ts";
 
 export async function requestHandler(req: Request): Promise<Response> {
 	const url = new URL(req.url);
@@ -24,6 +24,7 @@ export async function requestHandler(req: Request): Promise<Response> {
 		}
 
 		const data = await fetchLanguageStats(username, token);
+		console.log(data);
 
 		return new Response("Request processed", { status: 200 });
 	}

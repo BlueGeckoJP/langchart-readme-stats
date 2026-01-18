@@ -1,3 +1,5 @@
+import database from "./database.ts";
+
 type LanguageQueryResponse = {
 	data: {
 		user: {
@@ -40,6 +42,16 @@ export async function fetchLanguageStats(
 	username: string,
 	token: string,
 ): Promise<Map<string, number> | null> {
+	const db = database;
+	const shouldRefetch = await db.shouldRefetch(username);
+
+	if (!shouldRefetch) {
+		const cachedStats = await db.getLanguageStats(username);
+		if (cachedStats) {
+			return cachedStats;
+		}
+	}
+
 	const response = await fetch("https://api.github.com/graphql", {
 		method: "POST",
 		body: JSON.stringify({
@@ -78,6 +90,8 @@ export async function fetchLanguageStats(
 			}
 		}
 	}
+
+	await db.setLanguageStats(username, languageStats);
 
 	return languageStats;
 }

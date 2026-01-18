@@ -1,6 +1,6 @@
 {
 	"tasks": {
-		"dev": "deno run --watch-hmr --allow-net --allow-env --env=.env main.ts"
+		"dev": "deno run --watch-hmr --allow-net --allow-env --env=.env --unstable-kv main.ts"
 	},
 	"imports": {
 		"@/": "./src/"
