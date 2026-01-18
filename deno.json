@@ -1,6 +1,6 @@
 {
 	"tasks": {
-		"dev": "deno run --watch-hmr --allow-net main.ts"
+		"dev": "deno run --watch-hmr --allow-net --allow-env --env=.env main.ts"
 	},
 	"imports": {
 		"@/": "./src/"
