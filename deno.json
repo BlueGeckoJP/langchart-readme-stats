@@ -2,5 +2,13 @@
 	"tasks": {
 		"dev": "deno run --watch-hmr --allow-net main.ts"
 	},
-	"imports": {}
+	"imports": {
+		"@/": "./src/"
+	},
+	"fmt": {
+		"newLineKind": "lf",
+		"semiColons": true,
+		"singleQuote": false,
+		"trailingCommas": "always"
+	}
 }
