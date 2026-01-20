@@ -20,13 +20,7 @@ export async function requestHandler(req: Request): Promise<Response> {
 			});
 		}
 
-		const token = TOKEN;
-		if (!token) {
-			console.error("Error: GitHub token not set");
-			return new Response("GitHub token not set", { status: 500 });
-		}
-
-		const data = await fetchLanguageStats(username, token);
+		const data = await fetchLanguageStats(username, TOKEN);
 		if (!data) {
 			return new Response("Failed to fetch language statistics", {
 				status: 500,
