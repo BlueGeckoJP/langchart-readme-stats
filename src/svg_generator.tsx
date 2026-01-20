@@ -2,6 +2,14 @@
 
 import satori from "satori";
 
+const jetbrainsMono400 = await fetch(
+	"https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.17/files/jetbrains-mono-latin-400-normal.woff",
+).then((res) => res.arrayBuffer());
+
+const jetbrainsMono600 = await fetch(
+	"https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.17/files/jetbrains-mono-latin-600-normal.woff",
+).then((res) => res.arrayBuffer());
+
 interface LanguageData {
 	name: string;
 	percentage: number;
@@ -338,17 +346,13 @@ export async function generateSVG(data: StatsData): Promise<string> {
 			fonts: [
 				{
 					name: "JetBrains Mono",
-					data: await fetch(
-						"https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.17/files/jetbrains-mono-latin-400-normal.woff",
-					).then((res) => res.arrayBuffer()),
+					data: jetbrainsMono400,
 					weight: 400,
 					style: "normal",
 				},
 				{
 					name: "JetBrains Mono",
-					data: await fetch(
-						"https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.17/files/jetbrains-mono-latin-600-normal.woff",
-					).then((res) => res.arrayBuffer()),
+					data: jetbrainsMono600,
 					weight: 600,
 					style: "normal",
 				},
