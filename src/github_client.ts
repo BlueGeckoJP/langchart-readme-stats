@@ -64,16 +64,16 @@ export async function fetchLanguageStats(
 		},
 	});
 
-	const result = (await response.json()) as LanguageQueryResponse;
-
 	if (!response.ok) {
-		const responseText = await response.text();
+		const responseText = await response.text().catch(() => "");
 		const errorData =
 			responseText.length <= 300
 				? responseText
 				: `${responseText.slice(0, 300)}...`;
 		throw new Error(`GitHub API error: ${errorData}`);
 	}
+
+	const result = (await response.json()) as LanguageQueryResponse;
 
 	const languageStats = new Map<string, number>();
 
