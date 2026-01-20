@@ -20,7 +20,14 @@ export async function requestHandler(req: Request): Promise<Response> {
 			});
 		}
 
-		const data = await fetchLanguageStats(username, TOKEN);
+		const data = await fetchLanguageStats(username, TOKEN).catch((error) => {
+			console.error(
+				`Error fetching language stats for user ${username}:`,
+				error,
+			);
+			return null;
+		});
+
 		if (!data) {
 			return new Response("Failed to fetch language statistics", {
 				status: 500,
