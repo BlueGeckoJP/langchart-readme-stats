@@ -37,7 +37,14 @@ export async function requestHandler(req: Request): Promise<Response> {
 		const svg = await generateSVG({
 			username: username.toUpperCase(),
 			languages: data,
+		}).catch((error) => {
+			console.error(`Error generating SVG for user ${username}:`, error);
+			return null;
 		});
+
+		if (!svg) {
+			return new Response("Failed to generate SVG", { status: 500 });
+		}
 
 		return new Response(svg, {
 			status: 200,
