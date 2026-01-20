@@ -34,7 +34,7 @@ export async function requestHandler(req: Request): Promise<Response> {
 		}
 
 		const svg = await generateSVG({
-			username: username.toLocaleUpperCase(),
+			username: username.toUpperCase(),
 			languages: data,
 		});
 
