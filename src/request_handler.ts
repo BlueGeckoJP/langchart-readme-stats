@@ -6,6 +6,8 @@ export async function requestHandler(req: Request): Promise<Response> {
 	const url = new URL(req.url);
 	const path = url.pathname;
 
+	console.log(`Received request: ${req.method} ${path}`);
+
 	if (path === "/health" && req.method === "GET") {
 		return new Response("Health Check OK", { status: 200 });
 	}
