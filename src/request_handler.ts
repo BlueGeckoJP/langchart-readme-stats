@@ -1,5 +1,5 @@
 import { TOKEN } from "./constants.ts";
-import { fetchLanguageStats } from "./github_client.ts";
+import { fetchLanguageStats, sanitizeUsername } from "./github_client.ts";
 import { generateSVG } from "./svg_generator.tsx";
 
 export async function requestHandler(req: Request): Promise<Response> {
@@ -20,13 +20,20 @@ export async function requestHandler(req: Request): Promise<Response> {
 			});
 		}
 
-		const data = await fetchLanguageStats(username, TOKEN).catch((error) => {
-			console.error(
-				`Error fetching language stats for user ${username}:`,
-				error,
-			);
-			return null;
-		});
+		const sanitizedUsername = sanitizeUsername(username);
+		if (!sanitizedUsername) {
+			return new Response("Invalid username", { status: 400 });
+		}
+
+		const data = await fetchLanguageStats(sanitizedUsername, TOKEN).catch(
+			(error) => {
+				console.error(
+					`Error fetching language stats for user ${sanitizedUsername}:`,
+					error,
+				);
+				return null;
+			},
+		);
 
 		if (!data) {
 			return new Response("Failed to fetch language statistics", {
@@ -35,10 +42,13 @@ export async function requestHandler(req: Request): Promise<Response> {
 		}
 
 		const svg = await generateSVG({
-			username: username.toUpperCase(),
+			username: sanitizedUsername.toUpperCase(),
 			languages: data,
 		}).catch((error) => {
-			console.error(`Error generating SVG for user ${username}:`, error);
+			console.error(
+				`Error generating SVG for user ${sanitizedUsername}:`,
+				error,
+			);
 			return null;
 		});
 
