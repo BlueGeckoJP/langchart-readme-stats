@@ -132,3 +132,24 @@ export function sanitizeUsername(username: string): string | null {
 
 	return username;
 }
+
+export function sanitizeSizeParam(
+	widthStr: string | null,
+	heightStr: string | null,
+): [number, number] {
+	const defaultWidth = 360;
+	const defaultHeight = 320;
+
+	let width = widthStr ? parseInt(widthStr, 10) : defaultWidth;
+	let height = heightStr ? parseInt(heightStr, 10) : defaultHeight;
+
+	if (Number.isNaN(width) || width < 100 || width > 2000) {
+		width = defaultWidth;
+	}
+
+	if (Number.isNaN(height) || height < 100 || height > 2000) {
+		height = defaultHeight;
+	}
+
+	return [width, height];
+}

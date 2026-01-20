@@ -1,5 +1,9 @@
 import { TOKEN } from "./constants.ts";
-import { fetchLanguageStats, sanitizeUsername } from "./github_client.ts";
+import {
+	fetchLanguageStats,
+	sanitizeSizeParam,
+	sanitizeUsername,
+} from "./github_client.ts";
 import { generateSVG } from "./svg_generator.tsx";
 
 export async function requestHandler(req: Request): Promise<Response> {
@@ -19,6 +23,10 @@ export async function requestHandler(req: Request): Promise<Response> {
 				status: 400,
 			});
 		}
+
+		const rawWidth = url.searchParams.get("width");
+		const rawHeight = url.searchParams.get("height");
+		const [width, height] = sanitizeSizeParam(rawWidth, rawHeight);
 
 		const sanitizedUsername = sanitizeUsername(username);
 		if (!sanitizedUsername) {
@@ -44,6 +52,8 @@ export async function requestHandler(req: Request): Promise<Response> {
 		const svg = await generateSVG({
 			username: sanitizedUsername.toUpperCase(),
 			languages: data,
+			width: width,
+			height: height,
 		}).catch((error) => {
 			console.error(
 				`Error generating SVG for user ${sanitizedUsername}:`,

@@ -19,6 +19,8 @@ interface LanguageData {
 interface StatsData {
 	username: string;
 	languages: Map<string, number>;
+	width: number;
+	height: number;
 }
 
 // Language color mapping
@@ -342,8 +344,8 @@ export async function generateSVG(data: StatsData): Promise<string> {
 			</div>
 		</div>,
 		{
-			width: 360,
-			height: 320,
+			width: data.width,
+			height: data.height,
 			fonts: [
 				{
 					name: "JetBrains Mono",
