@@ -36,6 +36,7 @@ export async function requestHandler(req: Request): Promise<Response> {
 			status: 200,
 			headers: {
 				"Content-Type": "image/svg+xml",
+				"Cache-Control": "public, max-age=3600, s-maxage=3600",
 			},
 		});
 	}
