@@ -19,6 +19,8 @@ interface LanguageData {
 interface StatsData {
 	username: string;
 	languages: Map<string, number>;
+	width: number;
+	height: number;
 }
 
 // Language color mapping
@@ -148,7 +150,8 @@ export async function generateSVG(data: StatsData): Promise<string> {
 					"repeating-linear-gradient(0deg, #0b0d10, #0b0d10 2px, #0e1116 3px)",
 				color: "#e6e6eb",
 				padding: "16px",
-				width: "360px",
+				width: "100%",
+				height: "100%",
 				border: "1px solid #2a2f3a",
 				boxShadow: "0 0 0 1px #111 inset, 0 0 30px rgba(80, 120, 255, 0.15)",
 				position: "relative",
@@ -341,8 +344,8 @@ export async function generateSVG(data: StatsData): Promise<string> {
 			</div>
 		</div>,
 		{
-			width: 392,
-			height: 520,
+			width: data.width,
+			height: data.height,
 			fonts: [
 				{
 					name: "JetBrains Mono",
