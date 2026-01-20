@@ -116,17 +116,17 @@ const LANGUAGE_COLORS: Record<string, string> = {
 };
 
 export async function generateSVG(data: StatsData): Promise<string> {
-	// Calculate total characters
-	const totalChars = Array.from(data.languages.values()).reduce(
-		(sum, chars) => sum + chars,
+	// Calculate total bytes
+	const totalBytes = Array.from(data.languages.values()).reduce(
+		(sum, bytes) => sum + bytes,
 		0,
 	);
 
 	// Convert Map to LanguageData array with percentages and colors
 	const languageData: LanguageData[] = Array.from(data.languages.entries())
-		.map(([name, chars]) => ({
+		.map(([name, bytes]) => ({
 			name,
-			percentage: Math.round((chars / totalChars) * 100),
+			percentage: Math.round((bytes / totalBytes) * 100),
 			color: LANGUAGE_COLORS[name] || "#888888", // Default gray for unknown languages
 		}))
 		.sort((a, b) => b.percentage - a.percentage); // Sort by percentage descending
