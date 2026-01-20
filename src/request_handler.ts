@@ -1,9 +1,6 @@
 import { TOKEN } from "./constants.ts";
-import {
-	fetchLanguageStats,
-	sanitizeSizeParam,
-	sanitizeUsername,
-} from "./github_client.ts";
+import { fetchLanguageStats } from "./github_client.ts";
+import { sanitizeSizeParam, sanitizeUsername } from "./sanitize_utils.ts";
 import { generateSVG } from "./svg_generator.tsx";
 
 export async function requestHandler(req: Request): Promise<Response> {
