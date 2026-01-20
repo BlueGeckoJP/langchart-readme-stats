@@ -1,7 +1,7 @@
 import database from "./database.ts";
 
 type LanguageQueryResponse = {
-	data: {
+	data?: {
 		user: {
 			repositories: {
 				nodes: Array<{
@@ -17,6 +17,11 @@ type LanguageQueryResponse = {
 			};
 		};
 	};
+	errors?: Array<{
+		message: string;
+		locations?: Array<{ line: number; column: number }>;
+		path?: string[];
+	}>;
 };
 
 const languageQuery = `
@@ -74,6 +79,15 @@ export async function fetchLanguageStats(
 	}
 
 	const result = (await response.json()) as LanguageQueryResponse;
+
+	if (result.errors) {
+		const errorMessages = result.errors.map((err) => err.message).join("; ");
+		throw new Error(`GitHub API returned errors: ${errorMessages}`);
+	}
+
+	if (!result.data) {
+		throw new Error("GitHub API returned no data");
+	}
 
 	const languageStats = new Map<string, number>();
 
