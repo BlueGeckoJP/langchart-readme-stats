@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "dev": "deno run --watch-hmr --allow-net --allow-env --env=.env main.ts"
+    "dev": "deno run --watch-hmr --allow-net --allow-env --env=.env main.ts",
+    "pre-commit": "deno fmt && deno check && deno lint"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
