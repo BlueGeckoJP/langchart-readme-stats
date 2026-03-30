@@ -1,27 +1,27 @@
 import database from "./database.ts";
 
 type LanguageQueryResponse = {
-	data?: {
-		user: {
-			repositories: {
-				nodes: Array<{
-					languages: {
-						edges: Array<{
-							size: number;
-							node: {
-								name: string;
-							};
-						}>;
-					};
-				}>;
-			};
-		};
-	};
-	errors?: Array<{
-		message: string;
-		locations?: Array<{ line: number; column: number }>;
-		path?: string[];
-	}>;
+  data?: {
+    user: {
+      repositories: {
+        nodes: Array<{
+          languages: {
+            edges: Array<{
+              size: number;
+              node: {
+                name: string;
+              };
+            }>;
+          };
+        }>;
+      };
+    };
+  };
+  errors?: Array<{
+    message: string;
+    locations?: Array<{ line: number; column: number }>;
+    path?: string[];
+  }>;
 };
 
 const languageQuery = `
@@ -44,68 +44,67 @@ const languageQuery = `
 `;
 
 export async function fetchLanguageStats(
-	username: string,
-	token: string,
+  username: string,
+  token: string,
 ): Promise<Map<string, number> | null> {
-	const db = database;
-	const shouldRefetch = await db.shouldRefetch(username);
+  const db = database;
+  const shouldRefetch = await db.shouldRefetch(username,);
 
-	if (!shouldRefetch) {
-		const cachedStats = await db.getLanguageStats(username);
-		if (cachedStats) {
-			return cachedStats;
-		}
-	}
+  if (!shouldRefetch) {
+    const cachedStats = await db.getLanguageStats(username,);
+    if (cachedStats) {
+      return cachedStats;
+    }
+  }
 
-	const response = await fetch("https://api.github.com/graphql", {
-		method: "POST",
-		body: JSON.stringify({
-			query: languageQuery,
-			variables: { login: username },
-		}),
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${token}`,
-		},
-	});
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    body: JSON.stringify({
+      query: languageQuery,
+      variables: { login: username, },
+    },),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  },);
 
-	if (!response.ok) {
-		const responseText = await response.text().catch(() => "");
-		const errorData =
-			responseText.length <= 300
-				? responseText
-				: `${responseText.slice(0, 300)}...`;
-		throw new Error(`GitHub API error: ${errorData}`);
-	}
+  if (!response.ok) {
+    const responseText = await response.text().catch(() => "");
+    const errorData = responseText.length <= 300
+      ? responseText
+      : `${responseText.slice(0, 300,)}...`;
+    throw new Error(`GitHub API error: ${errorData}`,);
+  }
 
-	const result = (await response.json()) as LanguageQueryResponse;
+  const result = (await response.json()) as LanguageQueryResponse;
 
-	if (result.errors) {
-		const errorMessages = result.errors.map((err) => err.message).join("; ");
-		throw new Error(`GitHub API returned errors: ${errorMessages}`);
-	}
+  if (result.errors) {
+    const errorMessages = result.errors.map((err,) => err.message).join("; ",);
+    throw new Error(`GitHub API returned errors: ${errorMessages}`,);
+  }
 
-	if (!result.data) {
-		throw new Error("GitHub API returned no data");
-	}
+  if (!result.data) {
+    throw new Error("GitHub API returned no data",);
+  }
 
-	const languageStats = new Map<string, number>();
+  const languageStats = new Map<string, number>();
 
-	for (const repo of result.data.user.repositories.nodes) {
-		for (const langEdge of repo.languages.edges) {
-			const langName = langEdge.node.name;
-			const langSize = langEdge.size;
+  for (const repo of result.data.user.repositories.nodes) {
+    for (const langEdge of repo.languages.edges) {
+      const langName = langEdge.node.name;
+      const langSize = langEdge.size;
 
-			const currentSize = languageStats.get(langName);
-			if (currentSize !== undefined) {
-				languageStats.set(langName, currentSize + langSize);
-			} else {
-				languageStats.set(langName, langSize);
-			}
-		}
-	}
+      const currentSize = languageStats.get(langName,);
+      if (currentSize !== undefined) {
+        languageStats.set(langName, currentSize + langSize,);
+      } else {
+        languageStats.set(langName, langSize,);
+      }
+    }
+  }
 
-	await db.setLanguageStats(username, languageStats);
+  await db.setLanguageStats(username, languageStats,);
 
-	return languageStats;
+  return languageStats;
 }

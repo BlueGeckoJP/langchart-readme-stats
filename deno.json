@@ -1,20 +1,20 @@
 {
-	"tasks": {
-		"dev": "deno run --watch-hmr --allow-net --allow-env --env=.env --unstable-kv main.ts"
-	},
-	"compilerOptions": {
-		"jsx": "react-jsx",
-		"jsxImportSource": "preact"
-	},
-	"imports": {
-		"@/": "./src/",
-		"satori": "npm:satori@^0.19.1",
-		"preact": "npm:preact"
-	},
-	"fmt": {
-		"newLineKind": "lf",
-		"semiColons": true,
-		"singleQuote": false,
-		"trailingCommas": "always"
-	}
+  "tasks": {
+    "dev": "deno run --watch-hmr --allow-net --allow-env --env=.env main.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "imports": {
+    "@/": "./src/",
+    "satori": "npm:satori@^0.19.1",
+    "preact": "npm:preact"
+  },
+  "fmt": {
+    "newLineKind": "lf",
+    "semiColons": true,
+    "singleQuote": false,
+    "trailingCommas": "always"
+  }
 }
